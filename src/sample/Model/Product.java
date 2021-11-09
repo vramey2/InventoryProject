@@ -82,10 +82,16 @@ public class Product {
     }
 
     //Return observable list of associated parts
-    public ObservableList <Part> getAllAssociatedParts (){
+    public ObservableList <Part> getAllAssociatedParts(){
 
         return associatedParts;
 
+    }
+
+    public boolean deleteAssociatedPart (Part selectedAssociatedPart){
+        associatedParts.remove(selectedAssociatedPart);
+
+        return true;
     }
 
 }

@@ -21,8 +21,7 @@ import java.text.NumberFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static sample.Model.Inventory.addPart;
-import static sample.Model.Inventory.generateID;
+import static sample.Model.Inventory.*;
 
 public class ControllerAddPart implements Initializable{
 
@@ -81,7 +80,7 @@ public class ControllerAddPart implements Initializable{
 
     public void saveButtonPushed(ActionEvent actionEvent) throws IOException {
 
-
+try {
         int id = generateID();
 
 
@@ -96,23 +95,26 @@ public class ControllerAddPart implements Initializable{
             alert.setHeaderText("Please enter valid value!");
             alert.showAndWait();
             System.out.println(" inside if");
-        }
-        else{
+        } else {
 
-            try {
+            {
 
                 if (inHouse.isSelected()) {
                     int machineID = Integer.parseInt(machineIdTextField.getText());
                     addPart(new inHouse(id, name, price, stock, min, max, machineID));
                 } else {
                     String companyName = machineIdTextField.getText();
-                    addPart(new Outsourced(id, name, price, stock, min, max, companyName));
+                   addPart(new Outsourced(id, name, price, stock, min, max, companyName));
                 }
                 stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
-            } catch (NumberFormatException e) {
+
+            } }}
+         catch (NumberFormatException e) {
+
+                System.out.println("Inside exception");
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error dialog");
@@ -120,6 +122,8 @@ public class ControllerAddPart implements Initializable{
                 alert.showAndWait();
 
             }
-        }
-    }
-}
+        }}
+
+
+
+

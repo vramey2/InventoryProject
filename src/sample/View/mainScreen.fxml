@@ -50,7 +50,7 @@
                                 <TextField fx:id="queryProd" onAction="#getSearchResultsProduct" prefHeight="26.0" prefWidth="174.0" promptText="Search by Product ID or Name" />
                             </children>
                         </HBox>
-                        <TableView fx:id="productsTableView" prefHeight="230.0" prefWidth="301.0">
+                        <TableView fx:id="productsTableView" onMouseClicked="#userClickedOnProductsT" prefHeight="230.0" prefWidth="301.0">
                             <columns>
                                 <TableColumn fx:id="productIdColumn" prefWidth="75.0" text="Product ID" />
                                 <TableColumn fx:id="productNameColumn" prefWidth="92.20000457763672" text="Product Name" />
@@ -65,7 +65,7 @@
                 </VBox>
             </children>
         </HBox>
-        <Button fx:id="modifyButton" layoutX="360.0" layoutY="428.0" mnemonicParsing="false" onAction="#modifyButtonPushed" text="Modify" />
+        <Button fx:id="modifyButton" layoutX="360.0" layoutY="428.0" mnemonicParsing="false" onAction="#modifyPartButtonPushed" text="Modify" />
         <Button fx:id="deleteButton" layoutX="420.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteButtonPushed" text="Delete" />
         <Button fx:id="addProductButton" layoutX="797.0" layoutY="428.0" mnemonicParsing="false" onAction="#addProductButtonPushed" text="Add" />
         <Button fx:id="modifyProductButton" layoutX="846.0" layoutY="428.0" mnemonicParsing="false" onAction="#modifyProductButtonPushed" text="Modify" />

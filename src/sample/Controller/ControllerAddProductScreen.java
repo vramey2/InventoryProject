@@ -1,7 +1,8 @@
 package sample.Controller;
 
 
-import javafx.beans.property.Property;
+
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -33,21 +34,24 @@ public class ControllerAddProductScreen implements Initializable {
     public TextField minPrTextField;
     public Button cancelButton;
     public Button savePrButton;
-    public TableView partsTableViewTwo;
-    public TableColumn partIdColumn;
-    public TableColumn partNameColumn;
-    public TableColumn partStockColumn;
-    public TableColumn partPriceColumn;
-    public TableView associatedPartsTable;
-    public TableColumn assocPartIdColumn;
-    public TableColumn assocNameColumn;
-    public TableColumn assocStockColumn;
-    public TableColumn assocPriceColumn;
+    public TableView <Part> partsTableViewTwo;
+    public TableColumn <Part, Integer> partIdColumn;
+    public TableColumn <Part, String> partNameColumn;
+    public TableColumn <Part, Integer> partStockColumn;
+    public TableColumn <Part, Double> partPriceColumn;
+    public TableView <Part> associatedPartsTable;
+    public TableColumn <Part, Integer> assocPartIdColumn;
+    public TableColumn <Part, String> assocNameColumn;
+    public TableColumn <Part, Integer> assocStockColumn;
+    public TableColumn <Part, Double> assocPriceColumn;
     public TextField querySearchPart;
     public Button removeAssocPartButton;
     Stage stage;
     Parent scene;
     private Part selectedPart;
+
+    //may be need to delete later
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
 
 
@@ -61,7 +65,6 @@ public class ControllerAddProductScreen implements Initializable {
             stage.show();
         }
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -96,7 +99,17 @@ public class ControllerAddProductScreen implements Initializable {
             int max = Integer.parseInt(maxPrTextField.getText());
             int min = Integer.parseInt(minPrTextField.getText());
 
-            addProduct(new Product(productId, name, price, stock, max, min));
+            Product productAdded = new Product (productId, name, price, stock, min, max);
+
+
+            for (Part part : associatedParts) {
+                productAdded.addAssociatedPart(part);
+                System.out.println ("inside for");
+            }
+
+            addProduct(productAdded);
+
+
 
             if (associatedPartsTable.getItems().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -123,9 +136,7 @@ public class ControllerAddProductScreen implements Initializable {
 
         if (result.get() == ButtonType.OK) { //this gives us rows that were selected
 
-            /** associatedParts.remove(selectedPart);
-             deletePart(associatedPartsTable.getSelectionModel().getSelectedItem(), associatedPartsTable.getItems());
-             associatedPartsTable.setItems(associatedPartsTable.getItems());*/
+
             try {
                 ObservableList<Part> selectedRows, allSelectedParts;
                 allSelectedParts = associatedPartsTable.getItems();
@@ -145,8 +156,14 @@ public class ControllerAddProductScreen implements Initializable {
         }}
     public void addButtonPushed(ActionEvent event) {
 
-        Part selectedItem = (Part) partsTableViewTwo.getSelectionModel().getSelectedItem();
-        associatedPartsTable.getItems().add(selectedItem);
+        Part selectedItem;
+        selectedItem = partsTableViewTwo.getSelectionModel().getSelectedItem();
+        //  associatedPartsTable.getItems().add(selectedItem);
+        //maybe to delete
+        if (selectedItem != null){
+            associatedParts.add(selectedItem);
+            associatedPartsTable.setItems(associatedParts);
+        }
 
     }
 

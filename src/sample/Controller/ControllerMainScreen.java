@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 import static sample.Model.Inventory.*;
 public class ControllerMainScreen implements Initializable {
 
+    private static Product selectedProduct;
     public TextField queryT;
     public TextField queryProd;
     public Button exitButton;
@@ -57,6 +58,7 @@ public class ControllerMainScreen implements Initializable {
     Stage stage;
     Parent scene;
 
+
     //Method to change the scene to add Part
     public void addButtonPushed  (ActionEvent event) throws IOException {
 
@@ -88,7 +90,8 @@ public class ControllerMainScreen implements Initializable {
     }
 
     //Method to change the scene to modify Part
-    public void modifyButtonPushed  (ActionEvent event) throws IOException {
+    public void modifyPartButtonPushed(ActionEvent event) throws IOException {
+
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation( getClass().getResource( "/sample/View/modifyPartScreen.fxml"));
@@ -96,7 +99,11 @@ public class ControllerMainScreen implements Initializable {
         Parent tableViewParent = loader.load();
         Scene tableViewScene = new Scene(tableViewParent);
 
+
+
         ControllerModifyPart controller = loader.getController();
+
+
 
         controller.initData(partsTableView.getSelectionModel().getSelectedItem());
 
@@ -104,15 +111,11 @@ public class ControllerMainScreen implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
+
+
     }
 
     public void modifyProductButtonPushed(ActionEvent event) throws IOException {
-
-
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/sample/View/modifyProductScreen.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
 
 /**
         FXMLLoader loader = new FXMLLoader();
@@ -121,16 +124,31 @@ public class ControllerMainScreen implements Initializable {
         Parent tableViewParent = loader.load();
         Scene tableViewScene = new Scene(tableViewParent);
 
+
         ControllerModifyProduct controller = loader.getController();
 
-      //  controller.initDataProduct (productsTableView.getSelectionModel().getSelectedItem());
+
+
+        controller.initDataProduct (productsTableView.getSelectionModel().getSelectedItem());
 
         //This line gets the stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
-        window.show();
- */
-    }
+        window.show(); */
+       selectedProduct = productsTableView.getSelectionModel().getSelectedItem();
+
+
+
+       Parent parent = FXMLLoader.load(getClass().getResource("/sample/View/modifyProductScreen.fxml"));
+
+
+            Scene scene = new Scene(parent);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
+
+
 
 
     @Override
@@ -151,9 +169,10 @@ public class ControllerMainScreen implements Initializable {
         productPriceColumn.setCellValueFactory (new PropertyValueFactory<>("price"));
 
         this.modifyButton.setDisable (true);
+        this.deleteButton.setDisable(true);
+        this.deleteProductButton.setDisable(true);
+        this.modifyProductButton.setDisable(true);
 
-        // partPriceColumn.setCellFactory(TextFieldTableCell.forTableColumn()  );
-        // partNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
 
@@ -164,6 +183,8 @@ public class ControllerMainScreen implements Initializable {
 
         ObservableList<Part> parts = lookupPart(a);
 
+
+
         if (parts.size() == 0) {
             try {
                 int partID = Integer.parseInt(a);
@@ -172,61 +193,80 @@ public class ControllerMainScreen implements Initializable {
 
                 if (pt != null)
                     parts.add(pt);
+
             } catch (NumberFormatException e) {
                 //ignore
+
             }
         }
         partsTableView.setItems(parts);
+        if (parts.isEmpty()){
+            if (parts.isEmpty())
+            { {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Part is not found!");
+                alert.showAndWait();}}
+        }
     }
 
 
 
 
-    public void getSearchResultsProduct(ActionEvent actionEvent){
+    public void getSearchResultsProduct(ActionEvent actionEvent) {
 
 
         String b = queryProd.getText();
 
-        ObservableList <Product> products = lookupProduct (b);
+        ObservableList<Product> products = lookupProduct(b);
 
-        if (products.size() == 0 ) {
+        if (products.size() == 0) {
             try {
                 int productID = Integer.parseInt(b);
                 Product pd = lookupProduct(productID);
                 if (pd != null)
                     products.add(pd);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 //ignore
             }
         }
-        productsTableView.setItems (products);
+        productsTableView.setItems(products);
+        if (products.isEmpty()) {
+            if (products.isEmpty()) {
+                {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Product is not found!");
+                    alert.showAndWait();
+                }
+            }
+        }
     }
-
     //Exit button method to close main screen window
     public void exitButtonPushed (ActionEvent event) {
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit application?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            Stage stage = (Stage) exitButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
 
     public void userClickedOnPartsT(MouseEvent mouseEvent) {
         this.modifyButton.setDisable(false);
+        this.deleteButton.setDisable(false);
     }
 
     public void deleteButtonPushed(ActionEvent actionEvent) {
 
 
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this part?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                //this gives us rows that were selected
+                Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this part?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            //this gives us rows that were selected
-            Inventory.deletePart( partsTableView.getSelectionModel().getSelectedItem());
-
+            }
         }
-    }
 
 
     public void deleteProductButtonPushed(ActionEvent event) {
@@ -236,13 +276,27 @@ public class ControllerMainScreen implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             //this gives us rows that were selected
-            Inventory.deleteProduct( productsTableView.getSelectionModel().getSelectedItem());
+            ObservableList<Part> associatedParts = productsTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts();
+
+            if (associatedParts.size() >= 1) {
+               alert = new Alert ( Alert.AlertType.WARNING);
+                alert.setHeaderText("Product has associated parts!");
+                alert.showAndWait();
+            } else
+                Inventory.deleteProduct( productsTableView.getSelectionModel().getSelectedItem());
 
         }
 
     }
 
 
+    public void userClickedOnProductsT(MouseEvent mouseEvent) {
+        this.deleteProductButton.setDisable(false);
+        this.modifyProductButton.setDisable(false);
+    }
 
+    public static Product getProductToModify() {
+        return selectedProduct;
+    }
 
 }

@@ -2,7 +2,7 @@ package sample.Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import javafx.scene.control.Alert;
 
 
 import java.util.Objects;
@@ -20,20 +20,14 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
     }
 
     public static void updatePart(int index, Part selectedPart) {
-        /** int counter;
-         counter = -1;
-         for (Part p : getAllParts()) {
-         counter ++;
-         if(p.getId() == index) {
-         getAllParts().set(counter, selectedPart);
-         return;
-         }
-         }
-         */
+
         allParts.set(index, selectedPart);
     }
 
+    public static void updateProduct (int index, Product selectedProduct) {
 
+        allProducts.set(index, selectedProduct);
+    }
     public static ObservableList<Part> getAllParts() {
 
         return allParts;
@@ -66,8 +60,12 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
         ObservableList<Part> allParts = getAllParts();
         for (Part pt : allParts) {
             if (pt.getName().contains(name))
-                searchedPart.add(pt);
-        }
+
+               searchedPart.add(pt);
+               }
+
+
+
         return searchedPart;
     }
 

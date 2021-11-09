@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import sample.Model.Inventory;
 import sample.Model.Outsourced;
 import sample.Model.Part;
 import sample.Model.inHouse;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static sample.Model.Inventory.addPart;
+
 import static sample.Model.Inventory.updatePart;
 
 public class ControllerModifyPart implements Initializable {
@@ -69,11 +70,11 @@ public class ControllerModifyPart implements Initializable {
 
                 if (inHouseRadioButton.isSelected()) {
                     int machineID = Integer.parseInt(machineIdTextField.getText());
-                    addPart(new inHouse(id, name, price, stock, max, min, machineID));
+                    updatePart(id, new inHouse(id, name, price, stock, min, max, machineID));
                 }
                 else {
                     String companyName = machineIdTextField.getText();
-                    addPart(new Outsourced(id, name, price, stock, max, min, companyName));
+                    updatePart(id, new Outsourced(id, name, price, stock, min, max, companyName));
                 }
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
@@ -89,20 +90,9 @@ public class ControllerModifyPart implements Initializable {
             }
         }
     }
-    /**if (inHouseRadioButton.isSelected()) {
-     updatePart(index, new inHouse(Integer.parseInt(idNum.getText()), nameTextField.getText(), Double.parseDouble(priceTextField.getText()), Integer.parseInt(invTextField.getText()), Integer.parseInt(maxTextField.getText()), Integer.parseInt(minTextField.getText()), Integer.parseInt(machineIdTextField.getText())));
-     } else {
-     updatePart(index, new Outsourced(Integer.parseInt(idNum.getText()), nameTextField.getText(), Double.parseDouble(priceTextField.getText()), Integer.parseInt(invTextField.getText()), Integer.parseInt(maxTextField.getText()), Integer.parseInt(minTextField.getText()), machineIdTextField.getText()));
-     }
-
-     stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-     scene = FXMLLoader.load(getClass().getResource("/sample/View/view.fxml"));
-     stage.setScene(new Scene(scene));
-     stage.show();*/
 
 
 
-    //machineIdTextField.setText(String.valueOf(selectedPart.getMachineID()));
 
 
     //This method accepts person to initialize the view
@@ -148,5 +138,6 @@ public class ControllerModifyPart implements Initializable {
         changeLabel.setText("Machine ID");
         inHouseRadioButton.setSelected(true);
     }
+
 
 }
