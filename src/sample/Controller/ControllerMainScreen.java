@@ -31,13 +31,6 @@ public class ControllerMainScreen implements Initializable {
     public Button exitButton;
     public Button addPartButton;
     public Button modifyButton;
-    public TextField idNum;
-    public TextField nameTextField;
-    public TextField invTextField;
-    public TextField priceTextField;
-    public TextField maxTextField;
-    public TextField machineIdTextField;
-    public TextField minTextField;
     public Button deleteButton;
     public Button addProductButton;
     public Button deleteProductButton;
@@ -80,9 +73,7 @@ public class ControllerMainScreen implements Initializable {
 
 
 
-        // controller.initDataProductScreen (partsTableView.getSelectionModel().getSelectedItem());
-
-        //This line gets the stage information
+       //This line gets the stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
@@ -92,54 +83,44 @@ public class ControllerMainScreen implements Initializable {
     //Method to change the scene to modify Part
     public void modifyPartButtonPushed(ActionEvent event) throws IOException {
 
+        if (partsTableView.getSelectionModel().getSelectedItem() == null ){
+            Alert alert = new Alert ( Alert.AlertType.WARNING);
+            alert.setHeaderText("Please select a part first!");
+            alert.showAndWait();
+        }
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation( getClass().getResource( "/sample/View/modifyPartScreen.fxml"));
+        else {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sample/View/modifyPartScreen.fxml"));
 
-        Parent tableViewParent = loader.load();
-        Scene tableViewScene = new Scene(tableViewParent);
-
-
-
-        ControllerModifyPart controller = loader.getController();
-
-
-
-        controller.initData(partsTableView.getSelectionModel().getSelectedItem());
-
-        //This line gets the stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
+            Parent tableViewParent = loader.load();
+            Scene tableViewScene = new Scene(tableViewParent);
 
 
+            ControllerModifyPart controller = loader.getController();
+
+
+            controller.initData(partsTableView.getSelectionModel().getSelectedItem());
+
+
+            //This line gets the stage information
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(tableViewScene);
+            window.show();
+        }
     }
 
     public void modifyProductButtonPushed(ActionEvent event) throws IOException {
 
-/**
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation( getClass().getResource( "/sample/View/modifyProductScreen.fxml"));
-
-        Parent tableViewParent = loader.load();
-        Scene tableViewScene = new Scene(tableViewParent);
-
-
-        ControllerModifyProduct controller = loader.getController();
+        if (productsTableView.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Please select a product first!");
+            alert.showAndWait();
+        } else {
+            selectedProduct = productsTableView.getSelectionModel().getSelectedItem();
 
 
-
-        controller.initDataProduct (productsTableView.getSelectionModel().getSelectedItem());
-
-        //This line gets the stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show(); */
-       selectedProduct = productsTableView.getSelectionModel().getSelectedItem();
-
-
-
-       Parent parent = FXMLLoader.load(getClass().getResource("/sample/View/modifyProductScreen.fxml"));
+            Parent parent = FXMLLoader.load(getClass().getResource("/sample/View/modifyProductScreen.fxml"));
 
 
             Scene scene = new Scene(parent);
@@ -147,67 +128,43 @@ public class ControllerMainScreen implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-
-
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        // modifyButton.isDisable();
-        partsTableView.setItems(Inventory.getAllParts());
-        partIdColumn.setCellValueFactory (new PropertyValueFactory<>("id"));
-        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        partStockColumn.setCellValueFactory (new PropertyValueFactory<>("stock"));
-        partPriceColumn.setCellValueFactory (new PropertyValueFactory<>("price"));
-
-
-        productsTableView.setItems(Inventory.getAllProducts());
-        productIdColumn.setCellValueFactory (new PropertyValueFactory<>("id"));
-        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        productStockColumn.setCellValueFactory (new PropertyValueFactory<>("stock"));
-        productPriceColumn.setCellValueFactory (new PropertyValueFactory<>("price"));
-
-        this.modifyButton.setDisable (true);
-        this.deleteButton.setDisable(true);
-        this.deleteProductButton.setDisable(true);
-        this.modifyProductButton.setDisable(true);
-
     }
 
 
     public void getSearchResultsPart(ActionEvent actionEvent) {
 
 
-        String a = queryT.getText();
+            String a = queryT.getText();
 
-        ObservableList<Part> parts = lookupPart(a);
-
-
-
-        if (parts.size() == 0) {
-            try {
-                int partID = Integer.parseInt(a);
-                Part pt = lookupPart(partID);
+            ObservableList<Part> parts = lookupPart(a);
 
 
-                if (pt != null)
-                    parts.add(pt);
+            if (parts.size() == 0) {
+                try {
+                    int partID = Integer.parseInt(a);
+                    Part pt = lookupPart(partID);
 
-            } catch (NumberFormatException e) {
-                //ignore
+
+                    if (pt != null)
+                        parts.add(pt);
+
+                } catch (NumberFormatException e) {
+                    //ignore
+
+                }
 
             }
+            partsTableView.setItems(parts);
+            if (parts.isEmpty()) {
+
+                {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Part is not found!");
+                    alert.showAndWait();
+                }
+            }
         }
-        partsTableView.setItems(parts);
-        if (parts.isEmpty()){
-            if (parts.isEmpty())
-            { {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText("Part is not found!");
-                alert.showAndWait();}}
-        }
-    }
+
 
 
 
@@ -240,6 +197,7 @@ public class ControllerMainScreen implements Initializable {
             }
         }
     }
+
     //Exit button method to close main screen window
     public void exitButtonPushed (ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit application?");
@@ -258,19 +216,32 @@ public class ControllerMainScreen implements Initializable {
 
     public void deleteButtonPushed(ActionEvent actionEvent) {
 
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this part?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                //this gives us rows that were selected
-                Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
-
-            }
+        if (partsTableView.getSelectionModel().getSelectedItem() == null ){
+            Alert alert = new Alert ( Alert.AlertType.WARNING);
+            alert.setHeaderText("Part was not deleted!");
+            alert.showAndWait();
         }
+        else {Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this part?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            //this gives us rows that were selected
+            Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
+
+        }
+        else
+        { alert = new Alert ( Alert.AlertType.WARNING);
+            alert.setHeaderText("Part was not deleted!");
+            alert.showAndWait();}
+    }}
 
 
     public void deleteProductButtonPushed(ActionEvent event) {
-
+        if (productsTableView.getSelectionModel().getSelectedItem() == null ){
+            Alert alert = new Alert ( Alert.AlertType.WARNING);
+            alert.setHeaderText("Product was not deleted!");
+            alert.showAndWait();
+        }
+        else {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this poduct?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -279,15 +250,19 @@ public class ControllerMainScreen implements Initializable {
             ObservableList<Part> associatedParts = productsTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts();
 
             if (associatedParts.size() >= 1) {
-               alert = new Alert ( Alert.AlertType.WARNING);
+                alert = new Alert ( Alert.AlertType.WARNING);
                 alert.setHeaderText("Product has associated parts!");
                 alert.showAndWait();
             } else
                 Inventory.deleteProduct( productsTableView.getSelectionModel().getSelectedItem());
 
         }
+        else {
+            alert = new Alert ( Alert.AlertType.WARNING);
+            alert.setHeaderText("Product was not deleted!");
+            alert.showAndWait();}
 
-    }
+    }}
 
 
     public void userClickedOnProductsT(MouseEvent mouseEvent) {
@@ -298,5 +273,31 @@ public class ControllerMainScreen implements Initializable {
     public static Product getProductToModify() {
         return selectedProduct;
     }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // modifyButton.isDisable();
+        partsTableView.setItems(Inventory.getAllParts());
+        partIdColumn.setCellValueFactory (new PropertyValueFactory<>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partStockColumn.setCellValueFactory (new PropertyValueFactory<>("stock"));
+        partPriceColumn.setCellValueFactory (new PropertyValueFactory<>("price"));
+
+
+        productsTableView.setItems(Inventory.getAllProducts());
+        productIdColumn.setCellValueFactory (new PropertyValueFactory<>("id"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productStockColumn.setCellValueFactory (new PropertyValueFactory<>("stock"));
+        productPriceColumn.setCellValueFactory (new PropertyValueFactory<>("price"));
+
+        this.modifyButton.setDisable (true);
+        this.deleteButton.setDisable(true);
+        this.deleteProductButton.setDisable(true);
+        this.modifyProductButton.setDisable(true);
+
+    }
+
 
 }

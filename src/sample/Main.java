@@ -38,8 +38,8 @@ public class Main extends Application {
         Part part1 = new Outsourced(1, "spoon", 24.5, 1, 1, 500, "Wendy");
         Part part2 = new Outsourced(2, "knife", 30.1, 5, 1, 500, "Wendy");
         Part part3 = new Outsourced(3, "fork", 25.5, 21, 1, 500, "Wendy");
-        Part part4 = new inHouse(3, "plate", 25.5, 21, 1, 500, 224);
-        Part part5 = new inHouse(3, "pot", 25.5, 21, 1, 500, 300);
+        Part part4 = new inHouse(4, "plate", 25.5, 21, 1, 500, 224);
+        Part part5 = new inHouse(5, "pot", 25.5, 21, 1, 500, 300);
 
 
 

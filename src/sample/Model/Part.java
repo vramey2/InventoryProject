@@ -6,7 +6,8 @@ package sample.Model;
  */
 
     public abstract class Part {
-        private int id;
+
+    private int id;
         private String name;
         private double price;
         private int stock;

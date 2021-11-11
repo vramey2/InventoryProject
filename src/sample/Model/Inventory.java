@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Inventory {  private static ObservableList<Part> allParts = FXCollections.observableArrayList();
     private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
-    public static int partID;
+    public static int partID ;
     private static int productID;
 
     //Add items to the end of array list
@@ -104,6 +104,8 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
         return null;
     }
 
+
+
     public static int generateID() {
         partID += 1;
         return partID;
@@ -117,9 +119,11 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
     }
     public static boolean deletePart(Part selectedPart) {
 
-        allParts.remove (selectedPart);
+       if (selectedPart != null ){ allParts.remove (selectedPart);
 
-        return true;
+        return true;}
+       else
+           return false;
 
     }
     public static boolean deleteProduct (Product selectedProduct)  {

@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 
 import static sample.Model.Inventory.*;
 
-public class ControllerAddPart implements Initializable{
+public class ControllerAddPart implements Initializable {
 
     public Button backButton;
     public RadioButton outsourced;
@@ -80,39 +80,42 @@ public class ControllerAddPart implements Initializable{
 
     public void saveButtonPushed(ActionEvent actionEvent) throws IOException {
 
-try {
-        int id = generateID();
+
+            try {
+                int id = generateID();
 
 
-        String name = nameTextField.getText();
-        double price = Double.parseDouble(priceTextField.getText());
-        int stock = Integer.parseInt(invTextField.getText());
-        int max = Integer.parseInt(maxTextField.getText());
-        int min = Integer.parseInt(minTextField.getText());
+                String name = nameTextField.getText();
+                double price = Double.parseDouble(priceTextField.getText());
+                int stock = Integer.parseInt(invTextField.getText());
+                int max = Integer.parseInt(maxTextField.getText());
+                int min = Integer.parseInt(minTextField.getText());
 
-        if (max < min || stock < min || stock > max) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Please enter valid value!");
-            alert.showAndWait();
-            System.out.println(" inside if");
-        } else {
+                if (max < min || stock < min || stock > max || name.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Please enter valid value!");
+                    alert.showAndWait();
+                    System.out.println(" inside if");
+                } else
+                {
 
-            {
+                    {
 
-                if (inHouse.isSelected()) {
-                    int machineID = Integer.parseInt(machineIdTextField.getText());
-                    addPart(new inHouse(id, name, price, stock, min, max, machineID));
-                } else {
-                    String companyName = machineIdTextField.getText();
-                   addPart(new Outsourced(id, name, price, stock, min, max, companyName));
+                        if (inHouse.isSelected()) {
+                            int machineID = Integer.parseInt(machineIdTextField.getText());
+                            addPart(new inHouse(id, name, price, stock, min, max, machineID));
+                        } else {
+                            String companyName = machineIdTextField.getText();
+                            addPart(new Outsourced(id, name, price, stock, min, max, companyName));
+                        }
+                        stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                        scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
+                        stage.setScene(new Scene(scene));
+                        stage.show();
+
+                    }
                 }
-                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
-                stage.setScene(new Scene(scene));
-                stage.show();
-
-            } }}
-         catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
 
                 System.out.println("Inside exception");
 
@@ -122,7 +125,9 @@ try {
                 alert.showAndWait();
 
             }
-        }}
+        }
+    }
+
 
 
 
