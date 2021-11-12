@@ -3,22 +3,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 import sample.Model.Outsourced;
 import sample.Model.inHouse;
-import sample.Model.Part;
-import sample.Model.Inventory;
 
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static sample.Model.Inventory.*;
@@ -53,9 +47,8 @@ public class ControllerAddPart implements Initializable {
 
     //Method to change the scene to add Part
     public void backButtonPushed(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to go back to main screen?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+
+        if (Utility.displayAlert(1)) {
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
             stage.setScene(new Scene(scene));
@@ -91,12 +84,7 @@ public class ControllerAddPart implements Initializable {
                 int max = Integer.parseInt(maxTextField.getText());
                 int min = Integer.parseInt(minTextField.getText());
 
-                if (max < min || stock < min || stock > max || name.isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Please enter valid value!");
-                    alert.showAndWait();
-                    System.out.println(" inside if");
-                } else
+                if (Utility.inputValidation (min, max, stock, name))
                 {
 
                     {
@@ -119,10 +107,7 @@ public class ControllerAddPart implements Initializable {
 
                 System.out.println("Inside exception");
 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error dialog");
-                alert.setContentText("Please enter valid value for each field!");
-                alert.showAndWait();
+               Utility.displayErrorAlert();
 
             }
         }

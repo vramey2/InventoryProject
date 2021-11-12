@@ -21,7 +21,6 @@ import sample.Model.Product;
 import java.io.IOException;
 import java.net.URL;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import static sample.Model.Inventory.*;
 
@@ -48,17 +47,16 @@ public class ControllerAddProductScreen implements Initializable {
     public Button removeAssocPartButton;
     Stage stage;
     Parent scene;
-    private Part selectedPart;
+
 
     //may be need to delete later
-    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    public ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
 
 
     public void cancelButtonPushed(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to go back to main screen?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+
+        if (Utility.displayAlert(1)) {
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
             stage.setScene(new Scene(scene));
@@ -99,44 +97,43 @@ public class ControllerAddProductScreen implements Initializable {
             int max = Integer.parseInt(maxPrTextField.getText());
             int min = Integer.parseInt(minPrTextField.getText());
 
-            Product productAdded = new Product (productId, name, price, stock, min, max);
+
+            if (Utility.inputValidation (min, max, stock, name))
+                {
 
 
-            for (Part part : associatedParts) {
-                productAdded.addAssociatedPart(part);
-                System.out.println ("inside for");
+                Product productAdded = new Product(productId, name, price, stock, min, max);
+
+
+                for (Part part : associatedParts) {
+                    productAdded.addAssociatedPart(part);
+                    System.out.println("inside for");
+                }
+
+                addProduct(productAdded);
+
+
+                if (associatedPartsTable.getItems().isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error dialog");
+                    alert.setContentText("Please add associated parts!");
+                    alert.showAndWait();
+                } else {
+
+                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                }
             }
+        }
+        catch (NumberFormatException e) {
 
-            addProduct(productAdded);
-
-
-
-            if (associatedPartsTable.getItems().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error dialog");
-                alert.setContentText("Please add associated parts!");
-                alert.showAndWait();}
-            else {
-
-                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
-                stage.setScene(new Scene(scene));
-                stage.show();}
-        } catch (NumberFormatException e) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error dialog");
-            alert.setContentText("Please enter valid value for each field!");
-            alert.showAndWait();
+         Utility.displayErrorAlert();
         }
     }
     public void removeAssocPartPushed(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to remove this part?");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) { //this gives us rows that were selected
-
-
+        if (Utility.displayAlert(2)){
             try {
                 ObservableList<Part> selectedRows, allSelectedParts;
                 allSelectedParts = associatedPartsTable.getItems();
@@ -190,5 +187,6 @@ public class ControllerAddProductScreen implements Initializable {
 
         partsTableViewTwo.setItems(parts);
     }
+
 
 }

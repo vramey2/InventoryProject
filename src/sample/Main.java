@@ -6,9 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.Model.*;
-import sample.Controller.*;
+
+
+/** This class creates  an app for inventory management system.
+ * For future enhancement of the application, it is possible to add a warning when the inventory is getting too low.
+ * @author Veronika Ramey */
 
 public class Main extends Application {
+
+    /**This method is to set up PrimaryStage for the application. This method is called to set up the main stage and load the first scene.
+     * @param primaryStage This is for the main Stage of app.*/
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -18,6 +25,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+
+    /** This is the main method. When Java program runs this method is called first.
+     * @param args An array of Strings passed as parameters.*/
 
     public static void main(String[] args) {
 //Load test data

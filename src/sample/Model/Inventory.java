@@ -2,21 +2,38 @@ package sample.Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 
+/** This class has methods for manipulating part and product data. This class has methods for functionality of the inventory app.*/
 
-import java.util.Objects;
+public class Inventory {
 
-public class Inventory {  private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+    /**List of all parts in the Inventory app.*/
+
+    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+
+    /** This is a list for all products in the Inventory app.*/
+
     private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+
+    /** Id for a part.*/
     public static int partID ;
+
+    /**ID for a product.*/
     private static int productID;
 
-    //Add items to the end of array list
-    public static void addPart(Part newPart) {
 
+
+    /**This is method to add a new part. Method adds new Part to the end of array list for inventory.
+     * @param newPart This is newly added Part.*/
+     public static void addPart(Part newPart) {
         allParts.add(newPart);
+     }
 
+    /**This method is to add new product. Method adds a new Product to the end of array list for inventory.
+     * @param product This is newly added Product.*/
+     public static void addProduct(Product product) {
+
+         allProducts.add(product);
     }
 
     public static void updatePart(int index, Part selectedPart) {
@@ -28,16 +45,13 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
 
         allProducts.set(index, selectedProduct);
     }
+
     public static ObservableList<Part> getAllParts() {
 
         return allParts;
     }
 
-    public static void addProduct(Product product) {
 
-        allProducts.add(product);
-
-    }
 
     //Return observable list of parts
     public static ObservableList<Product> getAllProducts() {
@@ -47,14 +61,7 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
     }
 //search for parts
 
-    /**
-     * public static Part lookupPart (int partID) {
-     * for (Part part : allParts) {
-     * }
-     * <p>
-     * <p>
-     * }
-     */
+
     public static ObservableList<Part> lookupPart(String name) {
         ObservableList<Part> searchedPart = FXCollections.observableArrayList();
         ObservableList<Part> allParts = getAllParts();
@@ -106,17 +113,7 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
 
 
 
-    public static int generateID() {
-        partID += 1;
-        return partID;
-    }
 
-//generate product id
-
-    public static int generateProductId(){
-        productID +=1;
-        return productID;
-    }
     public static boolean deletePart(Part selectedPart) {
 
        if (selectedPart != null ){ allParts.remove (selectedPart);
@@ -133,4 +130,24 @@ public class Inventory {  private static ObservableList<Part> allParts = FXColle
         return true;
     }
 
+
+
+    public static int generateID() {
+        if (!Inventory.allParts.isEmpty()) {
+            partID = Inventory.allParts.size();
+        }
+        partID += 1;
+        return partID;
+
+    }
+
+//generate product id
+
+    public static int generateProductId(){
+        if (!allProducts.isEmpty()){
+            productID = allProducts.size();
+        }
+        productID +=1;
+        return productID;
+    }
 }

@@ -56,9 +56,8 @@ public class ControllerModifyProduct implements Initializable {
 
 
     public void cancelAssocPartButtonPushed(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to go back to main screen?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+
+        if (Utility.displayAlert(1)) {
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
             stage.setScene(new Scene(scene));
@@ -67,24 +66,7 @@ public class ControllerModifyProduct implements Initializable {
 
     }
 
-    public void initDataProduct(Product product) {
 
-
-        //   selectedProduct = product;
-
-        selectedProduct = ControllerMainScreen.getProductToModify();
-
-        associatedParts = selectedProduct.getAllAssociatedParts();
-
-        idPrModTextField.setText(String.valueOf(selectedProduct.getId()));
-        namePrModTextField.setText(selectedProduct.getName());
-        invPrModTextField.setText(String.valueOf(selectedProduct.getStock()));
-        pricePrModTextField.setText(String.valueOf(selectedProduct.getPrice()));
-        maxPrModTextField.setText(String.valueOf(selectedProduct.getMax()));
-        minPrTextFieldMod.setText(String.valueOf(selectedProduct.getMin()));
-
-
-    }
 
 
     @Override
@@ -154,9 +136,7 @@ public class ControllerModifyProduct implements Initializable {
 
         if (parts.isEmpty()){
               {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText("Part is not found!");
-                alert.showAndWait();}
+                Utility.displayWarningAlert(3);}
         }
     }
 
@@ -166,7 +146,8 @@ public class ControllerModifyProduct implements Initializable {
 
         Part selectedItem = partsTableViewModTwo.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
-            System.out.println("Select a part");
+            Utility.displayWarningAlert(1);
+           // System.out.println ("Select the part first!");
 
         } else {
             selectedProduct.addAssociatedPart(selectedItem);
@@ -175,10 +156,15 @@ public class ControllerModifyProduct implements Initializable {
     }
 
     public void removeAssocPartPushed(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to remove this part?");
-        Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.get() == ButtonType.OK) { //this gives us rows that were selected
+        if (associatedPartsModTable.getSelectionModel().getSelectedItem() == null ){
+            Utility.displayWarningAlert(4);
+        }
+
+        else {
+
+
+        if (Utility.displayAlert(2)) { //this gives us rows that were selected
 
             try {
                 ObservableList<Part> selectedRows, allSelectedParts;
@@ -193,6 +179,7 @@ public class ControllerModifyProduct implements Initializable {
 
                 //ignore
             }
+        }
 
 
         }
@@ -222,12 +209,8 @@ public class ControllerModifyProduct implements Initializable {
             int max = Integer.parseInt(maxPrModTextField.getText());
             int min = Integer.parseInt(minPrTextFieldMod.getText());
 
-            if (max < min || stock < min || stock > max || name.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Please enter valid value!");
-                alert.showAndWait();
-                System.out.println(" inside if");
-            } else {
+            if (Utility.inputValidation (min, max, stock, name))
+            {
 
                 Product newProduct = new Product(id, name, price, stock, min, max);
 
@@ -261,10 +244,7 @@ public class ControllerModifyProduct implements Initializable {
             }
             } catch(NumberFormatException | IOException e){
 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error dialog");
-                alert.setContentText("Please enter valid value for each field!");
-                alert.showAndWait();
+                Utility.displayErrorAlert();
             }
         }
 

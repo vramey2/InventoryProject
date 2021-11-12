@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,7 +18,7 @@ import sample.Model.Product;
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.Optional;
+
 import java.util.ResourceBundle;
 
 import static sample.Model.Inventory.*;
@@ -84,9 +83,7 @@ public class ControllerMainScreen implements Initializable {
     public void modifyPartButtonPushed(ActionEvent event) throws IOException {
 
         if (partsTableView.getSelectionModel().getSelectedItem() == null ){
-            Alert alert = new Alert ( Alert.AlertType.WARNING);
-            alert.setHeaderText("Please select a part first!");
-            alert.showAndWait();
+           Utility.displayWarningAlert(1);
         }
 
         else {
@@ -113,9 +110,7 @@ public class ControllerMainScreen implements Initializable {
     public void modifyProductButtonPushed(ActionEvent event) throws IOException {
 
         if (productsTableView.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Please select a product first!");
-            alert.showAndWait();
+            Utility.displayWarningAlert(2);
         } else {
             selectedProduct = productsTableView.getSelectionModel().getSelectedItem();
 
@@ -158,9 +153,7 @@ public class ControllerMainScreen implements Initializable {
             if (parts.isEmpty()) {
 
                 {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Part is not found!");
-                    alert.showAndWait();
+                   Utility.displayWarningAlert(3);
                 }
             }
         }
@@ -190,9 +183,7 @@ public class ControllerMainScreen implements Initializable {
         if (products.isEmpty()) {
             if (products.isEmpty()) {
                 {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Product is not found!");
-                    alert.showAndWait();
+                    Utility.displayWarningAlert(5);
                 }
             }
         }
@@ -200,13 +191,13 @@ public class ControllerMainScreen implements Initializable {
 
     //Exit button method to close main screen window
     public void exitButtonPushed (ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit application?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+
+        if (Utility.displayAlert(4)) {
             Stage stage = (Stage) exitButton.getScene().getWindow();
             stage.close();
         }
-    }
+        }
+
 
 
     public void userClickedOnPartsT(MouseEvent mouseEvent) {
@@ -217,52 +208,43 @@ public class ControllerMainScreen implements Initializable {
     public void deleteButtonPushed(ActionEvent actionEvent) {
 
         if (partsTableView.getSelectionModel().getSelectedItem() == null ){
-            Alert alert = new Alert ( Alert.AlertType.WARNING);
-            alert.setHeaderText("Part was not deleted!");
-            alert.showAndWait();
+            Utility.displayWarningAlert(4);
         }
-        else {Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this part?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+
+        else if  (Utility.displayAlert(2)){
             //this gives us rows that were selected
             Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
 
         }
         else
-        { alert = new Alert ( Alert.AlertType.WARNING);
-            alert.setHeaderText("Part was not deleted!");
-            alert.showAndWait();}
-    }}
+        {  Utility.displayWarningAlert(4);}
+    }
 
 
     public void deleteProductButtonPushed(ActionEvent event) {
-        if (productsTableView.getSelectionModel().getSelectedItem() == null ){
-            Alert alert = new Alert ( Alert.AlertType.WARNING);
-            alert.setHeaderText("Product was not deleted!");
-            alert.showAndWait();
+        if (productsTableView.getSelectionModel().getSelectedItem() == null) {
+            Utility.displayWarningAlert(6);
+        } else {
+
+            if (Utility.displayAlert(3)) {
+                {
+                    //this gives us rows that were selected
+                    ObservableList<Part> associatedParts = productsTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts();
+
+                    if (associatedParts.size() >= 1) {
+                       Utility.displayWarningAlert(7);
+                    } else
+                        Inventory.deleteProduct(productsTableView.getSelectionModel().getSelectedItem());
+
+                }
+            }
+        else{
+                   Utility.displayWarningAlert(6);
+                }
+
+            }
         }
-        else {
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this poduct?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            //this gives us rows that were selected
-            ObservableList<Part> associatedParts = productsTableView.getSelectionModel().getSelectedItem().getAllAssociatedParts();
-
-            if (associatedParts.size() >= 1) {
-                alert = new Alert ( Alert.AlertType.WARNING);
-                alert.setHeaderText("Product has associated parts!");
-                alert.showAndWait();
-            } else
-                Inventory.deleteProduct( productsTableView.getSelectionModel().getSelectedItem());
-
-        }
-        else {
-            alert = new Alert ( Alert.AlertType.WARNING);
-            alert.setHeaderText("Product was not deleted!");
-            alert.showAndWait();}
-
-    }}
 
 
     public void userClickedOnProductsT(MouseEvent mouseEvent) {

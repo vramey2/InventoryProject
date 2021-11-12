@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import sample.Model.*;
 import sample.Model.Outsourced;
-import sample.Controller.ControllerMainScreen;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,17 +38,15 @@ public class ControllerModifyPart implements Initializable {
 
     Stage stage;
     Parent scene;
-    private inHouse selectedInhouse;
-    private Part partS;
-
-    private Outsourced selectedOutsourced;
 
 
     public void backButtonPushed(ActionEvent event) throws IOException {
+
+        if (Utility.displayAlert(1)) {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
         stage.setScene(new Scene(scene));
-        stage.show();
+        stage.show();}
     }
 
     public void saveButtonPushed(ActionEvent event) throws IOException {
@@ -65,58 +63,20 @@ public class ControllerModifyPart implements Initializable {
 
 
 
-            if (max < min || stock < min || stock > max || name.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Please enter valid value!");
-                alert.showAndWait();
-                System.out.println(" inside if");
-            } else {
-
-
-
+            if (Utility.inputValidation (min, max, stock, name))
+            {
                 if (inHouseRadioButton.isSelected()) {
                     int machineID = Integer.parseInt(machineIdTextField.getText());
 
                  updatePart(index, new inHouse(id, name, price, stock, min, max, machineID));
-                 //   inHouse modifiedInHouse = new inHouse(id, name, price, stock, min, max, machineID);
-               //     Inventory.addPart(modifiedInHouse);
-                  /**  selectedInhouse.setId(id);
-                    selectedInhouse.setName(name);
-                    selectedInhouse.setPrice(price);
-                    selectedInhouse.setStock(stock);
-                    selectedInhouse.setMax(max);
-                    selectedInhouse.setMin(min);
-                    selectedInhouse.setMachineID(machineID);
-
-                    updated (id, selectedInhouse);*/
-                  //  inHouse selectedInhouse = new inHouse(id, name, price, stock, min, max, machineID);
-                //    Inventory.getAllParts().set(selectedIndex, selectedInhouse);
 
 
 
                 } else if (outsourcedRadioButton.isSelected()) {
                     String companyName = machineIdTextField.getText();
                 updatePart(index, new Outsourced(id, name, price, stock, min, max, companyName));
-                 //   Outsourced modifiedOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
-                  //  Inventory.addPart(modifiedOutsourced);
-                    /**
-                    selectedOutsourced.setId(id);
-                    selectedOutsourced.setName(name);
-                    selectedOutsourced.setPrice(price);
-                    selectedOutsourced.setStock(stock);
-                    selectedOutsourced.setMax(max);
-                    selectedOutsourced.setMin(min);
-                    selectedOutsourced.setCompanyName (companyName);
+                                  }
 
-                    updated (id, selectedOutsourced);*/
-
-
-                }
-
-                //Inventory.deletePart(selectedPart);
-
-
-           //     updatedPart(id, selectedPart);
 
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/sample/View/mainScreen.fxml"));
@@ -124,27 +84,14 @@ public class ControllerModifyPart implements Initializable {
                 stage.show();
             }
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error dialog");
-            alert.setContentText("Please enter valid value for each field!");
-            alert.showAndWait();
+           Utility.displayErrorAlert();
 
         }
 
     }
 
-    public boolean updated (int id, Part part) {
-        int index = -1;
-        for (Part partS : Inventory.getAllParts()) {
-            index += 1;
-            if (partS.getId() == id) {
-                Inventory.getAllParts().set(index, part);
-                return true;
-            }
 
-        }
-        return false; }
-    //This method accepts person to initialize the view
+    //This method accepts data to initialize the view
     public void initData(Part part) {
 
         selectedPart = part;
