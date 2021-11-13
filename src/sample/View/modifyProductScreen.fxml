@@ -61,7 +61,7 @@
                             <children>
                                 <HBox alignment="TOP_RIGHT" prefHeight="46.0" prefWidth="258.0">
                                     <children>
-                                        <TextField fx:id="querySearchPartMod" onAction="#getSearchedPartMod" promptText="Search by Part ID or Name" />
+                                        <TextField fx:id="querySearchPartMod" onAction="#getSearchedPartMod" onKeyPressed="#clearSearch" promptText="Search by Part ID or Name" />
                                     </children>
                                     <VBox.margin>
                                         <Insets />
@@ -109,7 +109,7 @@
             </padding></HBox>
         <Button fx:id="removeAssocPartButton" layoutX="590.0" layoutY="511.0" mnemonicParsing="false" onAction="#removeAssocPartPushed" text="Remove Associated Part" />
         <Button fx:id="cancelButtonMod" layoutX="682.0" layoutY="550.0" mnemonicParsing="false" onAction="#cancelAssocPartButtonPushed" text="Cancel" />
-        <Button fx:id="savePrButtonMod" layoutX="610.0" layoutY="550.0" mnemonicParsing="false" onAction="#saveAssocPartButtonPushed" text="Save" />
+        <Button fx:id="savePrButtonMod" layoutX="610.0" layoutY="550.0" mnemonicParsing="false" onAction="#saveUpdatedProductButtonPushed" text="Save" />
     </children>
 
 </AnchorPane>

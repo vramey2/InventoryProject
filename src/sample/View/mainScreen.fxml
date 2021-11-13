@@ -22,7 +22,7 @@
                         </Label>
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="37.0" prefWidth="452.0">
                             <children>
-                                <TextField fx:id="queryT" onAction="#getSearchResultsPart" prefHeight="26.0" prefWidth="167.0" promptText="Search by Part ID or Name" />
+                                <TextField fx:id="queryT" onAction="#getSearchResultsPart" onKeyPressed="#clearSearch" prefHeight="26.0" prefWidth="167.0" promptText="Search by Part ID or Name" />
                             </children>
                         </HBox>
                         <TableView fx:id="partsTableView" onMouseClicked="#userClickedOnPartsT" prefHeight="235.0" prefWidth="452.0">
@@ -47,7 +47,7 @@
                         </Label>
                         <HBox alignment="TOP_RIGHT" prefHeight="38.0" prefWidth="452.0">
                             <children>
-                                <TextField fx:id="queryProd" onAction="#getSearchResultsProduct" prefHeight="26.0" prefWidth="174.0" promptText="Search by Product ID or Name" />
+                                <TextField fx:id="queryProd" onAction="#getSearchResultsProduct" onKeyPressed="#clearSearchPr" prefHeight="26.0" prefWidth="174.0" promptText="Search by Product ID or Name" />
                             </children>
                         </HBox>
                         <TableView fx:id="productsTableView" onMouseClicked="#userClickedOnProductsT" prefHeight="230.0" prefWidth="301.0">

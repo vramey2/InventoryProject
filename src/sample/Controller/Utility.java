@@ -1,17 +1,22 @@
 package sample.Controller;
 
+import com.sun.javafx.charts.Legend;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sample.Model.*;
 import sample.Controller.*;
 
 import java.util.Optional;
 
+import static sample.Model.Inventory.getAllParts;
+
 public class Utility {
+
 
 
 
@@ -90,24 +95,15 @@ public class Utility {
             case 4:
                 alert.setContentText("Do you want to exit application?");
         }
-/**
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, " ");
-        switch (alertNumber) {
-            case 1:
-              new Alert(Alert.AlertType.CONFIRMATION, "Do you want to go back to main screen?");
 
-            break;
-
-            case 2:
-                new Alert(Alert.AlertType.CONFIRMATION, "Do you want to remove this part?");
-
-                break;
-
-        }
- */
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
-        } }
+        }
+
+
+
+
+}
 
 
 

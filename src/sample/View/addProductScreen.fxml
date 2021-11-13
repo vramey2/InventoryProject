@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -66,7 +61,7 @@
                             <children>
                                 <HBox alignment="TOP_RIGHT" prefHeight="46.0" prefWidth="258.0">
                                     <children>
-                                        <TextField fx:id="querySearchPart" onAction="#getSearchedPart" promptText="Search by Part ID or Name" />
+                                        <TextField fx:id="querySearchPart" onAction="#getSearchedPart" onKeyPressed="#clearSearch" promptText="Search by Part ID or Name" />
                                     </children>
                                     <VBox.margin>
                                         <Insets />
