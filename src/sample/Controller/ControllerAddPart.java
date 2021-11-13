@@ -1,6 +1,5 @@
 package sample.Controller;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -18,7 +17,9 @@ import java.util.ResourceBundle;
 import static sample.Model.Inventory.*;
 
 
-/**This is controller class that initiates functionality of addPartScreen.fxml
+/**This is controller class that initiates functionality of addPartScreen.fxml.
+ * Runtime exception occurs if instead of a number text is entered into stock, min, max or price fields.
+ * The solution is to include try and catch statement for numberformatexception, which is implemented in 'savebuttonpushed' method.
  *
  * @author Veronika Ramey
  * */
@@ -109,8 +110,7 @@ public class ControllerAddPart implements Initializable {
             int max = Integer.parseInt(maxTextField.getText());
             int min = Integer.parseInt(minTextField.getText());
 
-            if (Utility.inputValidation (min, max, stock, name))
-            {
+            if (Utility.inputValidation(min, max, stock, name)) {
 
                 {
 
@@ -130,12 +130,11 @@ public class ControllerAddPart implements Initializable {
             }
         } catch (NumberFormatException e) {
 
-            System.out.println("Inside exception");
-
             Utility.displayErrorAlert();
 
         }
     }
+
 
     /**Intializes controller. Method is to initialize controller for the add part scene.
      * @param url  Specifies how to resolve the root object's relative paths

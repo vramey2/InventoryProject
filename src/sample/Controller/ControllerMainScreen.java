@@ -23,7 +23,9 @@ import static sample.Model.Inventory.*;
 
 
 
-/**This is controller class that initiates functionality of mainScreen.fxml
+/**This is controller class that initiates functionality of mainScreen.fxml.
+ * A runtime exception occurs when no product is selected and modify product button is pushed. The runtime error is fixed
+ * by checking if selection is null and this solution included in 'modifypartbuttononpushed' method.
  *
  * @author Veronika Ramey
  * */
@@ -291,19 +293,18 @@ public class ControllerMainScreen implements Initializable {
      * If part has not been selected, the method shows alert instead of deleting a part.
      * @param actionEvent Action on delete part button*/
     public void deleteButtonPushed(ActionEvent actionEvent) {
-
-        if (partsTableView.getSelectionModel().getSelectedItem() == null ){
+ if (partsTableView.getSelectionModel().getSelectedItem() == null ){
             Utility.displayWarningAlert(4);
         }
 
-        else if  (Utility.displayAlert(2)){
+        else if   (Utility.displayAlert(2)){
 
-            Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem());
+            Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem()); }
 
-        }
-        else
+      else
         {  Utility.displayWarningAlert(4);}
     }
+
 
     /** Method to delete a product. Method is used to delete product once delete button is pushed.
      * If product has not been selected, the method shows alert instead of deleting a product.

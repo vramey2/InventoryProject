@@ -9,9 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.Model.*;
 import sample.Model.Product;
@@ -220,7 +218,7 @@ public class ControllerAddProductScreen implements Initializable {
          }
 
          /** Method resets parts table to all parts. This method resets parts table to list all available parts if search text field is empty.
-          * @param keyEvent Key is pressed in the search part textfield*/
+          * @param keyEvent Key is pressed in the search part text field*/
     public void clearSearch(KeyEvent keyEvent) {
         String checkText = querySearchPart.getText();
         if (checkText.equals(""))

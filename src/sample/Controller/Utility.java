@@ -1,25 +1,23 @@
 package sample.Controller;
 
-import com.sun.javafx.charts.Legend;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-import sample.Model.*;
-import sample.Controller.*;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
-import static sample.Model.Inventory.getAllParts;
+/**Class provides additional methods used for controller classes with purpose of code re-usability.
+ *
+ * @author Veronika RAMEY
+*/
 
 public class Utility {
 
-
-
-
+/**Validates user input. Method gives an alert if maximum is less minimum, stock quantity is not between maximum and minimum or name is not entered.
+ * @param min minimum value
+ * @param max value
+ * @param name name of part o rproduct
+ * @param stock quantity of part or product
+ * @return boolean returns true is validated and false if it is not*/
     public static boolean inputValidation (int min, int max, int stock, String name){
         if  (max < min || stock < min || stock > max || name.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -32,6 +30,7 @@ public class Utility {
             return true;
     }
 
+    /**Display alert. Methods displays error alert and asks user to enter missing input.*/
     public static void displayErrorAlert (){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error dialog");
@@ -39,6 +38,9 @@ public class Utility {
         alert.showAndWait();
     }
 
+
+    /**Displays warning alert. Method displays warning alert and uses switch to display different warning text.
+     * @param alertNumber number of the warning message*/
     public static void displayWarningAlert (int alertNumber) {
 
          Alert alert = new Alert ( Alert.AlertType.WARNING);
@@ -75,6 +77,8 @@ public class Utility {
         alert.showAndWait();
     }
 
+    /**Displays confirmation alert. Method is to ask for confirmation, displays confirmation type alert and uses switch to include different content text.
+     * @param alertNumber number of alert for switching text*/
     public static boolean displayAlert (int alertNumber) {
 
         Alert alert = new Alert (Alert.AlertType.CONFIRMATION);
@@ -99,9 +103,6 @@ public class Utility {
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
         }
-
-
-
 
 }
 
