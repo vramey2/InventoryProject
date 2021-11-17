@@ -24,8 +24,6 @@ import static sample.Model.Inventory.*;
 
 
 /**This is controller class that initiates functionality of mainScreen.fxml.
- * A runtime exception occurs when no product is selected and modify product button is pushed. The runtime error is fixed
- * by checking if selection is null and this solution included in 'modifypartbuttononpushed' method.
  *
  * @author Veronika Ramey
  * */
@@ -151,6 +149,8 @@ public class ControllerMainScreen implements Initializable {
 
     /** Method to change the scene to modify Product scene. This method changes main scene to modify product scene when appropriate button is pushed.
      * If part has not been selected, the method shows alert instead of lading modify product controller.
+     * RUNTIME ERROR A runtime exception occurs when no product is selected and modify product button is pushed. The runtime error is fixed
+     *  by checking if selection is null and this solution included in 'modifyproducttbuttononpushed' method.
      * @param event Action on modify part button*/
     public void modifyProductButtonPushed(ActionEvent event) throws IOException {
 

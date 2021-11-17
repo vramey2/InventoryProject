@@ -9,7 +9,8 @@ import sample.Model.*;
 
 
 /** This class creates  an app for inventory management system.
- * For future enhancement of the application, it is possible to add a warning when the inventory is getting too low.
+ * Javadoc folder is included as a separate zipfolder.
+ * FUTURE ENHANCEMENT For future enhancement of the application, it is possible to add a warning when the inventory is getting too low.
  * Additional table views can be added which will show parts and products with low inventory numbers.
  * @author Veronika Ramey */
 

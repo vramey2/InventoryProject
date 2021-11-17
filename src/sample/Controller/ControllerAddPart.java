@@ -18,8 +18,6 @@ import static sample.Model.Inventory.*;
 
 
 /**This is controller class that initiates functionality of addPartScreen.fxml.
- * Runtime exception occurs if instead of a number text is entered into stock, min, max or price fields.
- * The solution is to include try and catch statement for numberformatexception, which is implemented in 'savebuttonpushed' method.
  *
  * @author Veronika Ramey
  * */
@@ -97,6 +95,8 @@ public class ControllerAddPart implements Initializable {
 
     /**Method creates new instance of part. Method adds new part and takes back to the main screen.
      * Before part is saved input into the fields is validated and corresponding alerts are displayed.
+     * RUNTIME ERROR Runtime exception occurs if instead of a number text is entered into stock, min, max or price fields.
+     *  The solution is to include try and catch statement for numberformatexception, which is implemented in 'savebuttonpushed' method.
      * @param actionEvent action on save button*/
     public void saveButtonPushed(ActionEvent actionEvent) throws IOException {
 
